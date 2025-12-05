@@ -1,8 +1,12 @@
+import Footer from "./Footer";
+import Theme from "./Theme";
 
 function Home() {
   return (
     <div>
-      <h1>Hello</h1>;
+      <Theme />
+      <br></br>
+      <Footer/>
     </div>
   );
 }
