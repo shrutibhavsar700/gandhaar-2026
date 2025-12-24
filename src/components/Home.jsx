@@ -5,9 +5,6 @@ function Home() {
   return (
     <div>
       <Footer/>
-
-      <h1>Hello</h1>;
-
     </div>
   );
 }
