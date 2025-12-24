@@ -15,7 +15,7 @@ const Footer = () => {
             <span>FUN EVENTS</span>
           </div>
           <div>
-            <span>GANDHAAR 2025</span>
+            <span>GANDHAAR 2026</span>
             <span>CELEBRATING CULTURE</span>
             <span>JOIN THE FEST</span>
             <span>MUSIC</span>
@@ -59,7 +59,7 @@ const Footer = () => {
 
       <div className="footer-content">
         <div className="col col1">
-          <h3>Gandhaar 2025</h3>
+          <h3>Gandhaar 2026</h3>
           <p>
             MKSSS's Cummins College of Engineering for Women, Karve Nagar, Pune.
             411-052
