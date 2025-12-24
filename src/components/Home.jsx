@@ -1,19 +1,9 @@
+import "../style/Home.css";
 
+import Footer from "./Footer";
 function Home() {
   return (
     <div>
-
-      <Header/>
-      <GandhaarTheme/>
-      <Event/>
-      <StarLineUp/>
-      <Schedule/>
-      <AboutUs/>
-      <ImageGallery/>
-      <br></br>
-      <br></br>
-      <br></br>
-      <br></br>
       <Footer/>
 
       <h1>Hello</h1>;
