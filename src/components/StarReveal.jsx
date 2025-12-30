@@ -1,15 +1,9 @@
 import { useState } from "react";
+import QuinlliykFont from '../assets/fonts/QuinlliykRegular-gx3ME.ttf';
 import starImg from "../assets/star.jpg";
 
+
 import story1 from "../assets/stories/story1.jpg";
-import story2 from "../assets/stories/story2.jpg";
-import story3 from "../assets/stories/story3.jpg";
-import story4 from "../assets/stories/story4.jpg";
-import story5 from "../assets/stories/story5.jpg";
-import story6 from "../assets/stories/story6.jpg";
-import story7 from "../assets/stories/story7.jpg";
-import story8 from "../assets/stories/story8.jpg";
-import story9 from "../assets/stories/story9.jpg";
 import story10 from "../assets/stories/story10.jpg";
 import story11 from "../assets/stories/story11.jpg";
 import story12 from "../assets/stories/story12.jpg";
@@ -20,7 +14,15 @@ import story16 from "../assets/stories/story16.jpg";
 import story17 from "../assets/stories/story17.jpg";
 import story18 from "../assets/stories/story18.jpg";
 import story19 from "../assets/stories/story19.jpg";
+import story2 from "../assets/stories/story2.jpg";
 import story20 from "../assets/stories/story20.jpg";
+import story3 from "../assets/stories/story3.jpg";
+import story4 from "../assets/stories/story4.jpg";
+import story5 from "../assets/stories/story5.jpg";
+import story6 from "../assets/stories/story6.jpg";
+import story7 from "../assets/stories/story7.jpg";
+import story8 from "../assets/stories/story8.jpg";
+import story9 from "../assets/stories/story9.jpg";
 
 function StarReveal() {
 
@@ -66,9 +68,9 @@ function StarReveal() {
 
   return (
     <div
-      style={{
+      style={
+        {
         minHeight: "100vh",
-        background: "linear-gradient(135deg, #1c1c1c, #2b1055, #000000)",
         color: "#ffffff",
         padding: "30px 15px",
         fontFamily: "'Permanent Marker', cursive",
@@ -79,30 +81,45 @@ function StarReveal() {
     >
       {/* Google Font */}
       <style>
-        {`
-          @import url('https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap');
-        `}
-      </style>
+  {`
+    @font-face {
+      font-family: 'Quinlliyk';
+      src: url('${QuinlliykFont}') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    body {
+      font-family: 'Quinlliyk', sans-serif;
+    }
+  `}
+</style>
+
 
       {/* Heading */}
-      <h1
-        style={{
-          fontSize: "clamp(2.4rem, 7vw, 3.4rem)",
-          letterSpacing: "2px",
-          marginBottom: "5px"
-        }}
-      >
-        Gandhaar 2026 ⭐
-      </h1>
+<h1
+  style={{
+    fontFamily: 'Quinlliyk, sans-serif',
+    fontSize: "clamp(4rem, 8vw, 6rem)",
+    color: "#d4af37",
+    letterSpacing: "2px",
+    marginBottom: "5px"
+  }}
+>
+  THE GRAND REVEAL
+</h1>
+
 
       <h3
         style={{
-          opacity: 0.9,
-          marginBottom: "25px",
-          letterSpacing: "1px"
+          fontFamily: 'Quinlliyk, sans-serif',
+          fontSize: "5rem",
+          color: "#d4af37",
+          letterSpacing: "2px",
+          marginBottom: "5px",
         }}
       >
-        Guess the Star
+        Star Night 1
       </h3>
 
       {/* TV Frame */}

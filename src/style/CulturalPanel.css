@@ -1,13 +1,3 @@
-/* Reset */
-* {
-  box-sizing: border-box;
-}
-
-body {
-  background-image: url("https://pamgriffith.net/share/codepen/polaroid/corkboard.jpg");
-  padding: 20px;
-  font-family: Arial, sans-serif;
-}
 
 /* MAIN HEADING */
 .main-title {

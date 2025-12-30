@@ -1,11 +1,11 @@
-import "./CulturalPanel.css";
+import "../style/CulturalPanel.css";
 
 // import images
-import rucha from "../assets/images/rucha-joshi.jpg";
 import mrunmayi from "../assets/images/mrunmayi-jawalekar.jpg";
-import siddhi from "../assets/images/siddhi-bhamre.jpg";
-import shikha from "../assets/images/shikha-pawar.jpg";
+import rucha from "../assets/images/rucha-joshi.jpg";
 import sanskruti from "../assets/images/sanskruti-jawade.jpg";
+import shikha from "../assets/images/shikha-pawar.jpg";
+import siddhi from "../assets/images/siddhi-bhamre.jpg";
 import wamika from "../assets/images/wamika.jpg";
 import yukta from "../assets/images/yukta-khanvilkar.jpg";
 
