@@ -285,6 +285,42 @@ export default function Navbar() {
           justify-content: center;
           box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
+          /* 1. Add smooth transition to all button types */
+.desktop-shortcuts button,
+.btn-basic,
+.btn-main-inner,
+.btn-power,
+.desktop-power-btn,
+.mobile-power-toggle,
+.btn-volume div {
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.2s ease;
+}
+
+/* 2. Enlarge effect on Hover */
+.desktop-shortcuts button:hover,
+.btn-basic:hover,
+.btn-main-inner:hover,
+.btn-power:hover,
+.mobile-power-toggle:hover {
+    transform: scale(1.1); /* Enlarges by 10% */
+    filter: brightness(1.2); /* Makes it slightly glow/brighter */
+    z-index: 10; /* Ensures it stays on top while enlarging */
+}
+
+/* 3. Specialized hover for the desktop power button 
+   (Since it already has a bounce animation, we combine them) */
+.desktop-power-btn:hover {
+    filter: brightness(1.2);
+    box-shadow: 0 0 20px rgba(211, 47, 47, 0.6);
+}
+
+/* 4. Small click effect (Shrink slightly when pressed) */
+.desktop-shortcuts button:active,
+.btn-basic:active,
+.btn-main-inner:active,
+.btn-power:active {
+    transform: scale(0.95);
+}
       `}</style>
 
       {/* DESKTOP SIDEBAR */}
