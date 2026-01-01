@@ -1,24 +1,24 @@
-import { useEffect, useRef, useState } from "react";
-
+import React, { useEffect, useRef, useState } from "react";
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false); 
-  const bodyContainerRef = useRef(null);
+  const [isOpen, setIsOpen] = useState(false);
   const bodyMainRef = useRef(null);
 
+  // Helper to handle smooth scrolling to sections
+  const scrollTo = (id) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+      if (window.innerWidth <= 768) setIsOpen(false); // Close on mobile after click
+    }
+  };
+
+  // 3D Tilt Logic from your code
   useEffect(() => {
-    if (window.innerWidth <= 768) return;
-const handleMouseMove = (e) => {
-  const ax = -((window.innerWidth / 2 - e.pageX) / 120);
+    if (window.innerWidth <= 768 || !isOpen) return;
 
-  if (bodyMainRef.current) {
-    bodyMainRef.current.style.transform =
-      `rotate3D(0,1,0,${ax}deg)`;
-    bodyMainRef.current.style.marginLeft = `${ax / 5}px`;
-  }
-
-
-
+    const handleMouseMove = (e) => {
+      const ax = -((window.innerWidth / 2 - e.pageX) / 120);
       if (bodyMainRef.current) {
         bodyMainRef.current.style.transform = `rotate3D(0,1,0,${ax}deg)`;
         bodyMainRef.current.style.marginLeft = `${ax / 5}px`;
@@ -27,75 +27,113 @@ const handleMouseMove = (e) => {
 
     document.addEventListener("mousemove", handleMouseMove);
     return () => document.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [isOpen]);
 
   return (
     <>
       <style>{`
-        * {
-          box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
-        /* ---------- DESKTOP BAR ---------- */
-        .desktop-navbar {
+        /* ---------- DESKTOP SIDEBAR (Laptop Left) ---------- */
+        .desktop-sidebar {
           position: fixed;
           top: 0;
           left: 0;
-          width: 100%;
-          height: 64px;
-          background: rgba(0, 0, 0, 0.75);
+          height: 100vh;
+          width: 80px;
+          background: #0f0f0f;
+          z-index: 1200;
           display: flex;
-          justify-content: center;
+          flex-direction: column;
           align-items: center;
-          z-index: 1000;
+          padding-top: 24px;
+          border-right: 1px solid #222;
         }
 
-        .desktop-navbar ul {
-          list-style: none;
-          display: flex;
-          gap: 32px;
-          margin: 0;
-          padding: 0;
-        }
-
-        .desktop-navbar li {
+        .desktop-power-btn {
+          width: 52px;
+          height: 52px;
+          border-radius: 50%;
+          background: #d32f2f;
           color: #fff;
-          font-size: 14px;
-          font-weight: 600;
+          border: none;
+          font-size: 20px;
+          cursor: pointer;
+          animation: bounce 1.6s infinite;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 0 15px rgba(211, 47, 47, 0.4);
+        }
+
+        @keyframes bounce {
+          0%, 100% { transform: scale(1); }
+          50% { transform: scale(1.1); }
+        }
+
+        .desktop-shortcuts {
+          margin-top: 40px;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        }
+
+        .desktop-shortcuts button {
+          width: 60px;
+          height: 60px;
+          border-radius: 12px;
+          background: #202020;
+          color: #fff;
+          border: 1px solid #333;
+          font-size: 10px;
+          font-weight: bold;
           text-transform: uppercase;
           cursor: pointer;
+          transition: 0.2s;
+        }
+        .desktop-shortcuts button:hover { background: #333; border-color: #555; }
+
+        /* ---------- REMOTE CONTAINER (Fixed Layout) ---------- */
+        .body-container {
+          width: 226px;
+          height: 852px;
+          position: fixed;
+          z-index: 1100;
+          transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* ---------- REMOTE ---------- */
-        main {
-  min-height: 100vh;
-  display: block;          /* ❗ stop flex centering */
-  background: radial-gradient(
-    100% 100% at 49.97% 0%,
-    #7d8ba1 0%,
-    #627591 100%
-  );
-}
+        /* Positioning Logic */
+        @media (min-width: 769px) {
+          .body-container {
+            top: 50%;
+            left: ${isOpen ? "100px" : "-300px"}; /* Slides from left */
+            transform: translateY(-50%);
+            opacity: ${isOpen ? "1" : "0"};
+          }
+          .mobile-power-toggle { 
+     display: none !important; 
+  }
+        }
 
+        @media (max-width: 768px) {
+          .desktop-sidebar { display: none; }
+          .body-container {
+            left: 50%;
+            /* Responsive Scaling: Prevents remote from going off screen */
+            bottom: ${isOpen ? "20px" : "-100%"}; 
+            transform: translateX(-50%) scale(0.7); /* Scale down for mobile height */
+            transform-origin: bottom;
+            opacity: ${isOpen ? "1" : "0"};
+          }
+        }
 
-        .body-container {
-  width: 226px;
-  height: 852px;
-  perspective: 1000px;
-  position: fixed;
-  top: 20px;         
-  left: 50%;                 /* ✅ center horizontally */
-  transform: translateX(-50%); /* ✅ true centering */
-  z-index: 1000;
-  transition: top0.4s ease, opacity 0.3s ease;
-}
-
-
+        /* ---------- YOUR EXACT REMOTE DESIGN ---------- */
         .body-main-border {
           padding: 1px;
           border-radius: 42px;
           background: linear-gradient(180deg, #d6d7d9, #ffffff, #818183);
           filter: drop-shadow(0px 140px 150px rgba(21, 31, 47, 0.55));
+          height: 100%;
         }
 
         .body-main {
@@ -105,6 +143,7 @@ const handleMouseMove = (e) => {
           flex-direction: column;
           align-items: center;
           background: linear-gradient(180deg, #e9eaec, #959699);
+          transition: transform 0.1s ease-out;
         }
 
         .container-btns-top {
@@ -126,10 +165,6 @@ const handleMouseMove = (e) => {
           justify-content: center;
           cursor: pointer;
           color: #fff;
-        }
-
-        .invis {
-          opacity: 0;
         }
 
         .mic-outer {
@@ -177,20 +212,11 @@ const handleMouseMove = (e) => {
           color: #fff;
           font-size: 18px;
           font-weight: 700;
+          cursor: pointer;
         }
 
-        .dot {
-          width: 4px;
-          height: 4px;
-          border-radius: 50%;
-          background: #dfdfdf;
-          position: absolute;
-        }
-
-        .dot-top { top: 9px; }
-        .dot-right { right: 9px; }
-        .dot-bottom { bottom: 9px; }
-        .dot-left { left: 9px; }
+        .dot { width: 4px; height: 4px; border-radius: 50%; background: #dfdfdf; position: absolute; }
+        .dot-top { top: 9px; } .dot-right { right: 9px; } .dot-bottom { bottom: 9px; } .dot-left { left: 9px; }
 
         .container-btns-bottom {
           display: flex;
@@ -199,15 +225,13 @@ const handleMouseMove = (e) => {
           padding: 24px;
         }
 
-        .btns-col-left,
-        .btns-col-right {
+        .btns-col-left, .btns-col-right {
           width: 78px;
           display: flex;
           flex-direction: column;
         }
 
-        .btn-basic,
-        .btn-volume {
+        .btn-basic, .btn-volume {
           background: #202020;
           border-radius: 1000px;
           display: flex;
@@ -215,15 +239,14 @@ const handleMouseMove = (e) => {
           justify-content: center;
           margin-bottom: 14px;
           color: #dfdfdf;
-          font-size: 13px;
+          font-size: 11px;
           font-weight: 600;
           text-transform: uppercase;
+          cursor: pointer;
+          border: none;
         }
 
-        .btn-basic {
-          height: 78px;
-          text-align: center; 
-        }
+        .btn-basic { height: 78px; text-align: center; padding: 5px; }
 
         .btn-volume {
           flex: 1;
@@ -236,146 +259,91 @@ const handleMouseMove = (e) => {
           width: 4px;
           height: 93px;
           background: #d9dadc;
-          position: relative;
-          left: -1px;
-          margin-top: 133px;
+          position: absolute;
+          right: -4px;
+          top: 133px;
         }
 
-        /* ---------- RESPONSIVE ---------- */
-        @media (min-width: 769px) {
-          .mobile-remote { display: none; }
+        /* ---------- MOBILE POWER TOGGLE ---------- */
+        .mobile-power-toggle {
+          position: fixed;
+          bottom: 24px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 64px;
+          height: 64px;
+          border-radius: 50%;
+          background: #d32f2f;
+          color: #fff;
+          border: none;
+          font-size: 24px;
+          z-index: 1300;
+          cursor: pointer;
+          animation: bounce 1.6s infinite;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-
-        @media (max-width: 768px) {
-          .desktop-navbar { display: none; }
-        }
-          /* ---------- MOBILE COLLAPSE BEHAVIOR ---------- */
-
-.mobile-power-toggle {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: #000;
-  color: #fff;
-  border: none;
-  font-size: 20px;
-  z-index: 1100;
-  cursor: pointer;
-}
-
-/* Remote hidden */
-/* Remote fully hidden */
-.mobile-remote.closed .body-container {
-  top: 100vh;              /* completely below viewport */
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* Remote visible */
-.mobile-remote.open .body-container {
-  top: 20px;               /* original visible position */
-  opacity: 1;
-}
-
-
-
-/* Remote visible */
-.mobile-remote.open .body-container {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-/* Smooth animation */
-.body-container {
-  transition: transform 0.35s ease, opacity 0.3s ease;
-}
-
-/* Desktop should NOT see toggle */
-@media (min-width: 769px) {
-  .mobile-power-toggle {
-    display: none;
-  }
-}
-
       `}</style>
 
-      {/* DESKTOP BAR */}
-      <nav className="desktop-navbar">
-        <ul>
-          <li>Home</li>
-          <li>Events</li>
-          <li>Schedule</li>
-          <li>Star Lineup</li>
-          <li>About Us</li>
-          <li>Themes</li>
-          <li>Meet Team</li>
-        </ul>
-      </nav>
-{/* MOBILE TOGGLE BUTTON */}
-{!isOpen && (
-  <button
-    className="mobile-power-toggle"
-    onClick={() => setIsOpen(true)}
-  >
-    ⏻
-  </button>
-)}
+      {/* DESKTOP SIDEBAR */}
+      <div className="desktop-sidebar">
+        <button className="desktop-power-btn" onClick={() => setIsOpen(!isOpen)}>⏻</button>
+        <div className="desktop-shortcuts">
+          <button onClick={() => scrollTo('home')}>Home</button>
+          <button onClick={() => scrollTo('themes')}>Themes</button>
+          <button onClick={() => scrollTo('schedule')}>Schedule</button>
+        </div>
+      </div>
 
+      {/* MOBILE POWER TOGGLE */}
+      {!isOpen && (
+        <button className="mobile-power-toggle" onClick={() => setIsOpen(true)}>⏻</button>
+      )}
 
-      {/* MOBILE REMOTE */}
-      <main className={`mobile-remote ${isOpen ? "open" : "closed"}`}>
-        <div className="body-container" ref={bodyContainerRef}>
-          <div className="body-main-border">
-            <div className="body-main" ref={bodyMainRef}>
-              <div className="container-btns-top">
-                <div className="btn-power invis"></div>
-                <div className="mic-outer"><div className="mic-inner" /></div>
-                <button
-  className="btn-power"
-  onClick={() => setIsOpen(false)}
->
-  ⏻
-</button>
+      {/* REMOTE CONTROL */}
+      <div className="body-container">
+        <div className="body-main-border">
+          <div className="body-main" ref={bodyMainRef}>
+            <div className="container-btns-top">
+              <div style={{width: '38px'}}></div> {/* Spacer */}
+              <div className="mic-outer"><div className="mic-inner" /></div>
+              <button className="btn-power" onClick={() => setIsOpen(false)}>⏻</button>
+            </div>
 
+            <div className="container-btns-main">
+              <div className="btn-main-outer">
+                <div className="dot dot-top" />
+                <div className="dot dot-right" />
+                <div className="dot dot-bottom" />
+                <div className="dot dot-left" />
+                <div className="btn-main-inner" onClick={() => scrollTo('home')}>Home</div>
+              </div>
+            </div>
+
+            <div className="container-btns-bottom">
+              <div className="btns-col-left">
+                <button className="btn-basic" onClick={() => scrollTo('events')}>Events</button>
+                <button className="btn-basic" onClick={() => scrollTo('schedule')}>Schedule</button>
+                <button className="btn-basic" onClick={() => scrollTo('about')}>About Us</button>
+                <button className="btn-basic" onClick={() => scrollTo('themes')}>Themes</button>
               </div>
 
-              <div className="container-btns-main">
-                <div className="btn-main-outer">
-                  <div className="dot dot-top" />
-                  <div className="dot dot-right" />
-                  <div className="dot dot-bottom" />
-                  <div className="dot dot-left" />
-                  <div className="btn-main-inner">Home</div>
+              <div className="btns-col-right">
+                <button className="btn-basic" onClick={() => scrollTo('lineup')}>Star Lineup</button>
+                <div className="btn-volume">
+                  <div style={{cursor: 'pointer'}}>＋</div>
+                  <div style={{fontSize: '9px'}}>VOL</div>
+                  <div style={{cursor: 'pointer'}}>－</div>
                 </div>
-              </div>
-
-              <div className="container-btns-bottom">
-                <div className="btns-col-left">
-                  <div className="btn-basic">Events</div>
-                  <div className="btn-basic">Schedule</div>
-                  <div className="btn-basic">About Us</div>
-                  <div className="btn-basic">Themes</div>
-                </div>
-
-                <div className="btns-col-right">
-                  <div className="btn-basic">Star Lineup</div>
-                  <div className="btn-volume">
-                    <div>＋</div>
-                    <div>－</div>
-                  </div>
-                  <div className="btn-basic">Meet Team</div>
-                </div>
+                <button className="btn-basic" onClick={() => scrollTo('team')}>Meet Team</button>
               </div>
             </div>
           </div>
-
-          <div className="btn-side"></div>
         </div>
-      </main>
+        <div className="btn-side"></div>
+      </div>
     </>
   );
 }
